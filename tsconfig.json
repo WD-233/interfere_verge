@@ -6,6 +6,7 @@
 		"jsx": "preserve",
 		"jsxImportSource": "astro",
 		"strictNullChecks": true,
+		"types": ["astro/client", "node"],
 		"allowJs": false,
 		"declaration": true,
 		"skipLibCheck": true,

@@ -32,23 +32,38 @@ const REACTION_KINDS = new Set<string>(["like", "dislike", "report", "poop"]);
 /** 客户端直传 Blob 时允许的单文件上限 */
 const MAX_UPLOAD_BYTES = 200 * 1024 * 1024;
 
-export default {
-	async fetch(request: Request): Promise<Response> {
-		const action = new URL(request.url).searchParams.get("action") ?? "";
-		try {
-			if (request.method === "GET") {
-				return await handleGet(action, request);
-			}
-			if (request.method === "POST") {
-				return await handlePost(action, request);
-			}
-			return json({ error: "Method not allowed" }, 405);
-		} catch (error) {
-			console.error(`[us api] action=${action}`, error);
-			return json({ error: "服务器出错了，稍后再试" }, 500);
-		}
-	},
+/**
+ * 必须跑在 Node.js 上：鉴权和本地回退存储用了 process / Buffer / node:fs。
+ * `export default { fetch }` 会被 Vercel 当成 Edge，启动时直接 500。
+ */
+export const config = {
+	runtime: "nodejs",
+	maxDuration: 60,
 };
+
+export function GET(request: Request): Promise<Response> {
+	return handle(request);
+}
+
+export function POST(request: Request): Promise<Response> {
+	return handle(request);
+}
+
+async function handle(request: Request): Promise<Response> {
+	const action = new URL(request.url).searchParams.get("action") ?? "";
+	try {
+		if (request.method === "GET") {
+			return await handleGet(action, request);
+		}
+		if (request.method === "POST") {
+			return await handlePost(action, request);
+		}
+		return json({ error: "Method not allowed" }, 405);
+	} catch (error) {
+		console.error(`[us api] action=${action}`, error);
+		return json({ error: "服务器出错了，稍后再试" }, 500);
+	}
+}
 
 function json(body: unknown, status = 200, cookie?: string): Response {
 	const headers = new Headers({

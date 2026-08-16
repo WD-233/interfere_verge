@@ -7,6 +7,24 @@
 
 ---
 
+## 2026-08-17 — 修复太阳站 Vercel 500
+
+线上输入密码后出现「请求失败（500）」，构建日志里是 `api/_lib/auth.ts`、`api/_lib/store.ts` 的 **TS2591**（找不到 `process` / `Buffer` / `node:crypto` / `node:fs`）。
+
+原因有两层：
+1. 根目录 `tsconfig.json` 是给 Astro（`moduleResolution: bundler`）用的，Vercel 编译 `/api` 时没带上 Node 类型。
+2. `api/us.ts` 用了 `export default { fetch }`，Vercel 会按 Edge 运行；Edge 没有 `Buffer` / `node:fs`，函数一加载就崩。前端拿不到 `{ error }` JSON，于是显示「请求失败（500）」。
+
+改动：
+- `tsconfig.json` 加上 `"types": ["astro/client", "node"]`，并增加 `api/tsconfig.json`
+- `api/us.ts` 改成 `GET` / `POST` 导出，并声明 `runtime: "nodejs"`
+- `src/plugins/vite-us-api-dev.mjs` 同步改成调用 `GET` / `POST`（本地 `astro dev` 之前还在调 `default.fetch`，会报「本地 /api/us 处理失败」）
+- `vercel.json` 为 `api/us.ts` 指定 `maxDuration: 60`
+
+部署后请确认 Vercel 环境变量里有 `US_SPACE_PASSWORD`、`US_SESSION_SECRET`，并且 Blob store 已关联到该项目（会自动注入 `BLOB_READ_WRITE_TOKEN`）。
+
+---
+
 ## 2026-08-17 — 首页隐藏演示文、太阳站密码、成员姬晨旭
 
 ### 1. 首页只保留三篇演出记录

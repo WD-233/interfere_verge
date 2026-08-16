@@ -88,9 +88,18 @@ export function usApiDevPlugin() {
 				try {
 					const module = await server.ssrLoadModule(HANDLER_MODULE);
 					const body = await collectBody(req);
-					const webResponse = await module.default.fetch(
-						toWebRequest(req, body),
-					);
+					const webRequest = toWebRequest(req, body);
+					const method = (req.method ?? "GET").toUpperCase();
+					const handler =
+						method === "POST"
+							? module.POST
+							: method === "GET" || method === "HEAD"
+								? module.GET
+								: null;
+					if (typeof handler !== "function") {
+						throw new Error(`api/us.ts 没有导出 ${method} 处理函数`);
+					}
+					const webResponse = await handler(webRequest);
 					await sendWebResponse(res, webResponse);
 				} catch (error) {
 					server.config.logger.error(
