@@ -1,0 +1,17 @@
+---
+import UsSpace from "@components/features/us/UsSpace.svelte";
+import Layout from "@layouts/Layout.astro";
+
+/**
+ * 私密空间。刻意不使用 MainGridLayout：
+ * 这里不需要导航栏、侧边栏和 banner，排版与主站完全分开。
+ * 页面本身只是静态外壳，所有内容都要经 /api/us 鉴权后才会返回。
+ */
+---
+
+<Layout title="???" description="Private" siteWidgets={false}>
+	<meta slot="head" name="robots" content="noindex, nofollow" />
+	<main class="min-h-screen" data-pagefind-ignore>
+		<UsSpace client:only="svelte" />
+	</main>
+</Layout>

@@ -2,9 +2,9 @@ import Key from "../i18nKey";
 import type { Translation } from "../translation";
 
 export const zh_CN: Translation = {
-	[Key.home]: "主页",
-	[Key.about]: "关于我们",
-	[Key.archive]: "归档",
+	[Key.home]: "首页",
+	[Key.about]: "共振边际",
+	[Key.archive]: "档案",
 	[Key.search]: "搜索",
 	[Key.other]: "其他",
 
@@ -15,11 +15,11 @@ export const zh_CN: Translation = {
 	[Key.navOthers]: "其他",
 
 	[Key.tags]: "标签",
-	[Key.categories]: "分类",
+	[Key.categories]: "类别",
 	[Key.recentPosts]: "最新文章",
 	[Key.postList]: "文章列表",
 	[Key.tableOfContents]: "目录",
-	[Key.tocEmpty]: "当前页面没有目录",
+	[Key.tocEmpty]: "无目录",
 
 	// 公告栏
 	[Key.announcement]: "公告",
@@ -122,7 +122,7 @@ export const zh_CN: Translation = {
 
 	// 相册页面
 	[Key.albums]: "相册",
-	[Key.albumsSubtitle]: "记录生活中的美好瞬间",
+	[Key.albumsSubtitle]: "记录一些瞬间",
 	[Key.albumsEmpty]: "暂无内容",
 	[Key.albumsEmptyDesc]: "还没有创建任何相册，快去添加一些美好的回忆吧！",
 	[Key.albumsBackToList]: "返回相册",
@@ -337,7 +337,7 @@ export const zh_CN: Translation = {
 	[Key.settingsFeatures]: "功能",
 
 	// 站点统计
-	[Key.siteStats]: "站点统计",
+	[Key.siteStats]: "统计",
 	[Key.siteStatsPostCount]: "文章",
 	[Key.siteStatsCategoryCount]: "分类",
 	[Key.siteStatsTagCount]: "标签",

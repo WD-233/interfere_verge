@@ -5,7 +5,7 @@ description: "A generic example of article structure and frontmatter."
 image: "./cover.webp"
 tags: ["Example", "Writing", "Markdown"]
 category: Guides
-draft: false
+draft: true
 ---
 
 

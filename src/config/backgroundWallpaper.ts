@@ -2,18 +2,19 @@ import type { FullscreenWallpaperConfig } from "../types/config";
 
 export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 	enable: true,
+	// 与顶部横幅使用同一组乐队背景图，桌面端和移动端不再分开
 	src: {
 		desktop: [
-			"/assets/desktop-banner/1.webp",
-			"/assets/desktop-banner/2.webp",
-			"/assets/desktop-banner/3.webp",
-			"/assets/desktop-banner/4.webp",
+			"/assets/banner/1.webp",
+			"/assets/banner/2.webp",
+			"/assets/banner/3.webp",
+			"/assets/banner/4.webp",
 		],
 		mobile: [
-			"/assets/mobile-banner/1.webp",
-			"/assets/mobile-banner/2.webp",
-			"/assets/mobile-banner/3.webp",
-			"/assets/mobile-banner/4.webp",
+			"/assets/banner/1.webp",
+			"/assets/banner/2.webp",
+			"/assets/banner/3.webp",
+			"/assets/banner/4.webp",
 		],
 	},
 	position: "center",

@@ -47,6 +47,7 @@ import { remarkMarkSectionized } from "./src/plugins/remark-mark-sectionized.mjs
 import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
 import { remarkPlantuml } from "./src/plugins/remark-plantuml.mjs";
 import { remarkWikiLink } from "./src/plugins/remark-wiki-link.mjs";
+import { usApiDevPlugin } from "./src/plugins/vite-us-api-dev.mjs";
 import { resolveFontMode } from "./src/utils/fontMode.ts";
 
 const customFontsEnabled = resolveFontMode(siteConfig) === "custom";
@@ -205,7 +206,8 @@ export default defineConfig({
 		svelte({
 			preprocess: vitePreprocess(),
 		}),
-		sitemap(),
+		// 私密空间不进站点地图
+		sitemap({ filter: (page) => !page.includes("/us/") }),
 		mdx(),
 	],
 	markdown: {
@@ -319,7 +321,8 @@ export default defineConfig({
 		}),
 	},
 	vite: {
-		plugins: [tailwindcss()],
+		// usApiDevPlugin 只在 astro dev 生效，生产环境的 /api/us 由 Vercel 独立部署
+		plugins: [tailwindcss(), usApiDevPlugin()],
 		// 开发环境预打包优化：将常用依赖提前编译，避免首次页面加载时 on-demand 编译导致 8s+ 的等待
 		optimizeDeps: {
 			include: [

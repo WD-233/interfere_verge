@@ -133,103 +133,55 @@ export const navBarConfig: NavBarConfig = {
 		// 预设链接：归档
 		LinkPreset.Archive,
 
-		// 自定义一级下拉菜单示例：外部链接集合
+		// 乐队外部平台。Bilibili 账号尚未开通，先占位不挂链接。
 		{
 			name: "Links",
-			url: "/links/",
+			url: "#",
 			icon: "material-symbols:link",
 			children: [
 				{
-					name: "GitHub",
-					url: "https://github.com/LyraVoid/Mizuki",
-					external: true, // 外部链接，新标签页打开
-					icon: "fa7-brands:github",
-				},
-				{
 					name: "Bilibili",
-					url: "https://space.bilibili.com/701864046",
-					external: true,
+					url: "#", // 账号搭好后把这里换成空间地址，并加上 external: true
 					icon: "fa7-brands:bilibili",
-				},
-				{
-					name: "Gitee",
-					url: "https://gitee.com/matsuzakayuki/Mizuki",
-					external: true,
-					icon: "mdi:git",
 				},
 			],
 		},
 
-		// 自定义一级下拉菜单示例：个人内容页面
+		// 乐队自己的内容页面
 		{
-			name: "My",
-			url: "/content/",
+			name: "我们的",
+			url: "#",
 			icon: "material-symbols:person",
 			children: [
 				{
-					name: "Anime",
-					url: "/anime/",
-					icon: "material-symbols:movie",
-				},
-				{
-					name: "Diary",
-					url: "/diary/",
-					icon: "material-symbols:book",
-				},
-				{
-					name: "Gallery",
+					name: "相册",
 					url: "/albums/",
 					icon: "material-symbols:photo-library",
 				},
 				{
-					name: "Devices",
-					url: "/devices/",
-					icon: "material-symbols:devices",
-					external: false, // 内部链接，当前页导航
-				},
-			],
-		},
-
-		// 自定义一级下拉菜单示例：关于相关
-		{
-			name: "About",
-			url: "/content/",
-			icon: "material-symbols:info",
-			children: [
-				{
-					name: "About",
-					url: "/about/",
-					icon: "material-symbols:person",
-				},
-				{
-					name: "Friends",
-					url: "/friends/",
+					name: "成员",
+					url: "/members/",
 					icon: "material-symbols:group",
 				},
 			],
 		},
 
-		// 自定义一级下拉菜单示例：其他页面
+		// 关于
 		{
-			name: "Others",
-			url: "#", // "#" 作为占位 URL，点击不会跳转
-			icon: "material-symbols:more-horiz",
+			name: "About",
+			url: "#",
+			icon: "material-symbols:info",
 			children: [
 				{
-					name: "Projects",
-					url: "/projects/",
-					icon: "material-symbols:work",
+					name: "共振边际",
+					url: "/about/",
+					icon: "material-symbols:person",
 				},
 				{
-					name: "Skills",
-					url: "/skills/",
-					icon: "material-symbols:psychology",
-				},
-				LinkPreset.AITools,
-				{
-					name: "Timeline",
-					url: "/timeline/",
-					icon: "material-symbols:timeline",
+					name: "???",
+					url: "/us/",
+					icon: "material-symbols:lock-outline",
+					noSwup: true, // 独立排版页面，跳过 Swup 无刷新跳转
 				},
 			],
 		},

@@ -2,6 +2,8 @@
 
 /* 导入相册样式 */
 @import "./albums.css";
+/* 导入成员页面样式 */
+@import "./members.css";
 /* 导入追番页面样式 */
 @import "./anime.css";
 @import "./animation-enhancements.css";

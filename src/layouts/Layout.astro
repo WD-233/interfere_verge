@@ -40,6 +40,11 @@ interface Props {
 	postSlug?: string;
 	coverImage?: string;
 	layoutVariant?: "default" | "home" | "post";
+	/**
+	 * 是否挂载主站的全局挂件（音乐播放器、Live2D 看板娘）。
+	 * 私密空间 /us/ 有自己的播放器，也不需要看板娘，所以传 false。
+	 */
+	siteWidgets?: boolean;
 }
 
 let {
@@ -51,6 +56,7 @@ let {
 	postSlug,
 	coverImage,
 	layoutVariant = "default",
+	siteWidgets = true,
 } = Astro.props;
 
 // defines global css variables
@@ -248,10 +254,10 @@ const bannerOffset =
 		<slot />
 
 		<!-- Music Player - 核心始终加载（当enable=true），UI通过showFloatingPlayer控制 -->
-		<MusicPlayer client:idle />
+		{siteWidgets && <MusicPlayer client:idle />}
 
 		<!-- Pio 看板娘组件 - 仅在进入视口时加载 -->
-		{pioConfig.enable && <Pio config={pioConfig} />}
+		{siteWidgets && pioConfig.enable && <Pio config={pioConfig} />}
 
 		<CodeGroupManager />
 		<DiagramManager />

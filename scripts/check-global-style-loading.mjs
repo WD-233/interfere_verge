@@ -82,7 +82,9 @@ const pages = [
 	{
 		name: "About page",
 		htmlPath: "about/index.html",
-		requiredMarkup: [["card-github", "rendered GitHub repository card"]],
+		// 关于页现在是乐队介绍，不再包含模板自带的 GitHub 卡片演示，
+		// 因此只校验全局样式是否加载，不再要求特定markup。
+		requiredMarkup: [],
 		requiredRules: [
 			[".card-github", "GitHub repository card styles"],
 			[".custom-md .image-grid", "extended Markdown layout styles"],

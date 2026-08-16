@@ -1,0 +1,68 @@
+---
+import Image from "@components/atoms/Image/Image.astro";
+
+import type { Member } from "../../../data/members";
+
+interface Props {
+	member: Member;
+	instrumentLabel: string;
+}
+
+const { member, instrumentLabel } = Astro.props;
+---
+
+<div
+	class="group relative bg-(--card-bg) border border-(--line-divider) rounded-(--radius-large) overflow-hidden hover:shadow-lg transition-shadow"
+>
+	<div class="relative member-photo-container aspect-2/3 overflow-hidden">
+		<Image
+			src={member.photo}
+			alt={member.name}
+			class="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+			widths={[200, 400, 600]}
+			sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+		/>
+	</div>
+
+	<div class="member-body p-3">
+		<h3
+			class="text-sm font-bold text-black/90 dark:text-white/90 leading-tight"
+		>
+			{member.name}
+		</h3>
+		<p
+			class="text-black/50 dark:text-white/50 text-xs font-medium tracking-wide mb-1"
+		>
+			{member.englishName}
+		</p>
+		<p class="text-black/60 dark:text-white/60 text-xs mb-2">
+			{member.nickname}
+		</p>
+
+		<div class="space-y-1 text-xs">
+			<div class="member-instruments text-xs">
+				<span class="text-black/50 dark:text-white/50">
+					{instrumentLabel}
+				</span>
+				<span class="member-instruments-list">
+					{
+						member.instruments.map((instrument) => (
+							<span class="text-black/70 dark:text-white/70 whitespace-nowrap">
+								{instrument}
+							</span>
+						))
+					}
+				</span>
+			</div>
+			<div class="flex flex-wrap gap-1 mt-2">
+				{
+					member.tags.map((tag) => (
+						<span class="px-1.5 py-0.5 bg-(--btn-regular-bg) text-black/70 dark:text-white/70 rounded text-xs">
+							{tag}
+						</span>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</div>

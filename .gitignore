@@ -54,6 +54,16 @@ src/data/bilibili-data.json
 # Lighthouse CI
 .lighthouseci/
 
+# 原始素材（手机原图、wav 等，合计数百 MB）。
+# 站点实际使用的是 scripts/prepare-band-assets.mjs 压缩后的派生文件，
+# 那些已经提交在 public/ 和 src/content/posts/ 下。
+# 原图请自己另外备份；确实想连原图一起版本管理的话，删掉这一行即可。
+src/my_fig/
+
+# 私密空间本地开发数据（未配置 Vercel Blob 时的回退存储）
+.us-data/
+public/us-media/
+
 # Live2D editor source files
 *.psd
 *.psd~

@@ -76,6 +76,7 @@ const hasChildren = children.length > 0;
 								}
 								class="dropdown-item"
 								aria-label={child.name}
+								data-no-swup={child.noSwup ? "" : null}
 							>
 								<div class="flex items-center">
 									{child.icon && (

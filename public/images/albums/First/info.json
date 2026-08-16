@@ -1,0 +1,10 @@
+{
+	"title": "Ours",
+	"hidden": false,
+	"description": "一些演出照片",
+	"date": "2026-06-23",
+	"location": "杭高院",
+	"tags": ["2026", "HIAS"],
+	"layout": "masonry",
+	"columns": 3
+}

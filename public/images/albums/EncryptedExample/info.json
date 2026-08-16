@@ -1,5 +1,7 @@
 {
 	"mode": "external",
+	"hidden": true,
+	"_note": "加密相册的写法保留在这里作参考（password + passwordHint 字段）。hidden 改成 false 即可重新显示。",
 	"title": "加密相册示例",
 	"description": "这是一个加密相册示例，需要密码才能查看照片",
 	"date": "2025-05-22",

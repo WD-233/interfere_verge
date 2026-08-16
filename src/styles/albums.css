@@ -47,6 +47,32 @@
   }
 }
 
+/*
+ * 相册列表网格。
+ * 这段原本写在 src/pages/albums.astro 的 <style is:global> 里，移到这里是因为
+ * Swup 无刷新跳转时不一定会更新 <head>（开发模式下 updateHead 为 false），
+ * 页面级样式表会来不及加载，导致首次进入相册页时卡片按原始尺寸铺开。
+ */
+#albums-grid {
+  grid-template-columns: 1fr;
+}
+
+@media (width >= 640px) {
+  #albums-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+#main-grid[data-layout-mode="grid"] #albums-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (width < 640px) {
+  #main-grid[data-layout-mode="grid"] #albums-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* 响应式瀑布流 */
 @media (width < 768px) {
   .gallery-masonry {

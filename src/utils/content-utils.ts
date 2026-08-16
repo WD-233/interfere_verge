@@ -5,11 +5,27 @@ import { initPostIdMap } from "@utils/permalink-utils";
 import { comparePublishedDatesDescending } from "@utils/post-date-utils";
 import { getCategoryUrl, getPostUrl } from "@utils/url-utils";
 
+/**
+ * 首页 / 档案只展示已发布的乐队内容。
+ *
+ * Mizuki 原本只在生产构建时过滤草稿（开发环境保留草稿便于预览），
+ * 本地就会一直看到模板自带的 Examples / Guides。改成始终过滤草稿，
+ * 并且额外隐藏这两个演示类别，让 `pnpm dev` 和线上看到的列表一致。
+ * 需要预览某篇草稿时，把它的 frontmatter 里 `draft` 临时改成 false 即可。
+ */
+const HIDDEN_DEMO_CATEGORIES = new Set(["examples", "guides"]);
+
+const isPublished = ({
+	data,
+}: {
+	data: { draft?: boolean; category?: string | null };
+}) =>
+	data.draft !== true &&
+	!HIDDEN_DEMO_CATEGORIES.has((data.category ?? "").trim().toLowerCase());
+
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts() {
-	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getCollection("posts", isPublished);
 
 	const sorted = allBlogPosts.sort((a, b) => {
 		// 首先按置顶状态排序，置顶文章在前
@@ -86,9 +102,7 @@ export interface Tag {
 }
 
 export async function getTagList(): Promise<Tag[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getCollection<"posts">("posts", isPublished);
 
 	const countMap: Record<string, number> = {};
 	allBlogPosts.forEach((post: { data: { tags: string[] } }) => {
@@ -115,9 +129,7 @@ export interface Category {
 }
 
 export async function getCategoryList(): Promise<Category[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getCollection<"posts">("posts", isPublished);
 	const count: Record<string, number> = {};
 	allBlogPosts.forEach((post: { data: { category: string | null } }) => {
 		if (!post.data.category) {
@@ -299,9 +311,7 @@ export async function getRelatedPosts(
 		useIDF: weights.tagIDF ?? true,
 	};
 
-	const allPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allPosts = await getCollection<"posts">("posts", isPublished);
 
 	// 排除自身和加密文章
 	const candidates = allPosts.filter(
