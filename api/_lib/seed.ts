@@ -1,4 +1,4 @@
-import type { UsAlbum, UsData, UsPhoto } from "../../src/types/us";
+import type { UsAlbum, UsData, UsPhoto } from "../../src/types/us.js";
 
 /**
  * 首次运行时写入的初始内容。

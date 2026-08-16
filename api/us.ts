@@ -9,7 +9,7 @@ import type {
 	UsPlaylist,
 	UsReactionKind,
 	UsSessionInfo,
-} from "../src/types/us";
+} from "../src/types/us.js";
 import {
 	checkPassword,
 	clearSessionCookie,
@@ -17,7 +17,8 @@ import {
 	isConfigured,
 	parseIdentity,
 	readIdentity,
-} from "./_lib/auth";
+} from "./_lib/auth.js";
+import { asNodeHandler } from "./_lib/node-handler.js";
 import {
 	blobEnabled,
 	deleteMedia,
@@ -26,7 +27,7 @@ import {
 	safeFileName,
 	saveMedia,
 	writeData,
-} from "./_lib/store";
+} from "./_lib/store.js";
 
 const REACTION_KINDS = new Set<string>(["like", "dislike", "report", "poop"]);
 /** 客户端直传 Blob 时允许的单文件上限 */
@@ -34,7 +35,7 @@ const MAX_UPLOAD_BYTES = 200 * 1024 * 1024;
 
 /**
  * 必须跑在 Node.js 上：鉴权和本地回退存储用了 process / Buffer / node:fs。
- * `export default { fetch }` 会被 Vercel 当成 Edge，启动时直接 500。
+ * GET/POST 给本地 astro dev 用；default 给 Vercel 的 Node Serverless 用。
  */
 export const config = {
 	runtime: "nodejs",
@@ -47,6 +48,13 @@ export function GET(request: Request): Promise<Response> {
 
 export function POST(request: Request): Promise<Response> {
 	return handle(request);
+}
+
+export default async function vercelHandler(
+	req: Parameters<typeof asNodeHandler>[1],
+	res: Parameters<typeof asNodeHandler>[2],
+): Promise<void> {
+	await asNodeHandler(handle, req, res);
 }
 
 async function handle(request: Request): Promise<Response> {

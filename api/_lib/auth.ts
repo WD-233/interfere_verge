@@ -1,6 +1,6 @@
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 
-import type { UsAuthor } from "../../src/types/us";
+import type { UsAuthor } from "../../src/types/us.js";
 
 const COOKIE_NAME = "us_session";
 const SESSION_DAYS = 30;

@@ -7,6 +7,24 @@
 
 ---
 
+## 2026-08-17 — 修复 Vercel ESM 相对路径
+
+Runtime `ERR_MODULE_NOT_FOUND: Cannot find module '/var/task/api/_lib/auth'`。
+Node ESM 不会自动补 `.js`，Vercel 把 `api/us.ts` 编成 `us.js` 后，`from "./_lib/auth"` 解析失败。
+所有 `api/` 内本地相对 import 已加上 `.js` 后缀（含 `auth` / `store` / `seed` / `node-handler` 以及类型文件）。业务逻辑和种子数据未改。
+
+---
+
+## 2026-08-17 — 太阳站 Vercel POST 500 与 Blob 环境变量
+
+构建已经通过，但线上输入密码仍「请求失败（500）」。
+
+1. **函数导出**：非 Next 项目的 `/api/*.ts` 必须有 Node `(req, res)` 的 `export default`。只导出 `GET`/`POST` 时，本地 Vite 插件能工作，Vercel 对 POST 会 500。已补上 `api/_lib/node-handler.ts`。
+2. **环境变量**：截图里有 `US_SPACE_PASSWORD`、`BLOB_STORE_ID`、`BLOB_WEBHOOK_PUBLIC_KEY`，缺的是 **`BLOB_READ_WRITE_TOKEN`**。后两个只是 store id 和 webhook 公钥；读写和浏览器直传要用长效 token（`handleUpload` 也依赖它）。`US_SESSION_SECRET` 建议补上，缺了会用密码派生，能登录但不稳妥。
+3. `blobEnabled()` 在有 `BLOB_STORE_ID` 且跑在 Vercel 上时也视为已开通 Blob（OIDC），但上传仍建议配齐 `BLOB_READ_WRITE_TOKEN`。
+
+---
+
 ## 2026-08-17 — 修复太阳站 Vercel 500
 
 线上输入密码后出现「请求失败（500）」，构建日志里是 `api/_lib/auth.ts`、`api/_lib/store.ts` 的 **TS2591**（找不到 `process` / `Buffer` / `node:crypto` / `node:fs`）。

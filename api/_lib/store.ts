@@ -3,8 +3,8 @@ import path from "node:path";
 
 import { del, head, put } from "@vercel/blob";
 
-import type { UsAlbum, UsData, UsMediaKind } from "../../src/types/us";
-import { seedData } from "./seed";
+import type { UsAlbum, UsData, UsMediaKind } from "../../src/types/us.js";
+import { seedData } from "./seed.js";
 
 const DATA_BLOB_PATH = "us/data.json";
 const LOCAL_DATA_FILE = path.join(process.cwd(), ".us-data", "data.json");
@@ -12,7 +12,11 @@ const LOCAL_MEDIA_DIR = path.join(process.cwd(), "public", "us-media");
 const LOCAL_MEDIA_URL_PREFIX = "/us-media/";
 
 export function blobEnabled(): boolean {
-	return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+	if (process.env.BLOB_READ_WRITE_TOKEN) {
+		return true;
+	}
+	// 新版 Blob 用 OIDC：BLOB_STORE_ID + Vercel 自动注入的 VERCEL_OIDC_TOKEN
+	return Boolean(process.env.BLOB_STORE_ID && process.env.VERCEL);
 }
 
 export async function readData(): Promise<UsData> {
